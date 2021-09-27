@@ -170,7 +170,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-09-27 13:52:19 / 修改时间：12:42:40" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
+              <time title="创建时间：2021-09-27 13:52:19 / 修改时间：15:08:11" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -193,7 +193,65 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="GitHub-Pages的组织逻辑"><a href="#GitHub-Pages的组织逻辑" class="headerlink" title="GitHub Pages的组织逻辑"></a>GitHub Pages的组织逻辑</h1><p>GitHub Pages有两种组织形式，即个人主页和项目主页。<br>个人主页对应repo为{UserName}.github.io的master分支，而项目主页对应各个repo下的gh-pages分支。<br>本文暂且只讨论前者。</p>
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本文讨论使用GitHub Pages作为博客页，使用markdown作为博客的记录形式，利用hexo来完成相应的生成工作。</p>
+<h2 id="GitHub-Pages的组织逻辑"><a href="#GitHub-Pages的组织逻辑" class="headerlink" title="GitHub Pages的组织逻辑"></a>GitHub Pages的组织逻辑</h2><p>GitHub Pages有两种组织形式：  </p>
+<ul>
+<li>个人主页: 对应repo为{UserName}.github.io的master分支</li>
+<li>项目主页: 对应各个repo下的gh-pages分支。</li>
+</ul>
+<p>本文暂且只讨论个人主页的搭建。</p>
+<h1 id="创建git-repo"><a href="#创建git-repo" class="headerlink" title="创建git repo"></a>创建git repo</h1><p>在GitHub上新建一个repo，名称为UserName.github.io，其中UserName为你的GitHub用户名。<br>这个repo的master分支就用来作为博客的页面存储了。</p>
+<h1 id="hexo相关的环境准备"><a href="#hexo相关的环境准备" class="headerlink" title="hexo相关的环境准备"></a>hexo相关的环境准备</h1><h2 id="1-安装Node-js"><a href="#1-安装Node-js" class="headerlink" title="1. 安装Node.js"></a>1. 安装Node.js</h2><p><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">下载地址在这里</a>，安装完成后在控制台中输入以下命令来检查是否成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-安装hexo"><a href="#2-安装hexo" class="headerlink" title="2. 安装hexo"></a>2. 安装hexo</h2><p>使用npm进行安装:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<h1 id="创建本地博客项目"><a href="#创建本地博客项目" class="headerlink" title="创建本地博客项目"></a>创建本地博客项目</h1><h2 id="1-初始化博客目录"><a href="#1-初始化博客目录" class="headerlink" title="1. 初始化博客目录"></a>1. 初始化博客目录</h2><p>在你想要创建项目的地方，使用以下指令初始化一个指定名称的博客目录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init MyBlog</span><br></pre></td></tr></table></figure>
+<p>其中MyBlog为创建的博客目录名，可以任意指定。</p>
+<h2 id="2-安装Git部署插件"><a href="#2-安装Git部署插件" class="headerlink" title="2. 安装Git部署插件"></a>2. 安装Git部署插件</h2><p>稍后执行部署的时候，需要告诉hexo将博客部署到哪里，这里我们希望将其部署至GitHub仓库。所以使用以下指令进行安装:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改一些配置"><a href="#3-修改一些配置" class="headerlink" title="3. 修改一些配置"></a>3. 修改一些配置</h2><p>我们需要对配置文件(MyBlog/_config.yml)进行一些修改。</p>
+<p>首先配置一下博客页的标题、作者、语言、时区等信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: C209&#x27;s Blog</span><br><span class="line">subtitle: &#x27;&#x27;</span><br><span class="line">description: &#x27;&#x27;</span><br><span class="line">keywords:</span><br><span class="line">author: C209</span><br><span class="line">language: </span><br><span class="line">- zh-CN</span><br><span class="line">- zh-TW</span><br><span class="line">- en</span><br><span class="line">timezone: Asia/Shanghai</span><br></pre></td></tr></table></figure>
+
+<p>接着是最底下的deploy信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/UserName/UserName.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>其中UserName为你的GitHub用户名。</p>
+<h1 id="将博客项目存储至repo"><a href="#将博客项目存储至repo" class="headerlink" title="将博客项目存储至repo"></a>将博客项目存储至repo</h1><p>至此为止，MyBlog目录下的文件其实都是只在本地的，之后hexo执行部署时并不会将它们也推送上去（这其中也包括source/_posts下的md源文件）。假如以后想要换个机器接着写博客的话，这些东西丢了还是很麻烦的。所以希望利用这个repo也将这些内容一并存储起来，之后只需要在别处把项目clone下来，就可以继续写博客了。对这个不感兴趣的话，本步骤可以跳过。</p>
+<h2 id="1-将博客项目关联至repo"><a href="#1-将博客项目关联至repo" class="headerlink" title="1. 将博客项目关联至repo"></a>1. 将博客项目关联至repo</h2><p>在MyBlog目录下，执行以下命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin https://github.com/UserName/UserName.github.io</span><br></pre></td></tr></table></figure>
+<p>其中UserName为你的GitHub用户名。</p>
+<h2 id="2-创建并推送至新的分支"><a href="#2-创建并推送至新的分支" class="headerlink" title="2. 创建并推送至新的分支"></a>2. 创建并推送至新的分支</h2><p>使用以下命令将当前博客项目中的文件推送至新建的source分支:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b source</span><br><span class="line">git add .</span><br><span class="line">git commit -m &#x27;add source&#x27;</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
+
+<p>之后在其他机器上，只需要clone这个repo并切换至source分支，并利用之前步骤的指令完成hexo相关的环境准备即可。md的编写和提交也直接在source分支上进行。</p>
+<h1 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h1><p>可以找一个自己喜欢的主题，这里以<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">next</a>为例。</p>
+<h2 id="1-下载主题"><a href="#1-下载主题" class="headerlink" title="1. 下载主题"></a>1. 下载主题</h2><p>在MyBlog下执行以下指令即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<p>如果有参考之前的步骤，将博客项目提交至source分支的话，这里也可以将该主题直接作为我们自己repo的一个submodule，这样比较简洁清晰。这一步纯粹看个人喜好。</p>
+<h2 id="2-在配置中启用主题"><a href="#2-在配置中启用主题" class="headerlink" title="2. 在配置中启用主题"></a>2. 在配置中启用主题</h2><p>依旧修改配置文件(MyBlog/_config.yml):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<h1 id="编写博客"><a href="#编写博客" class="headerlink" title="编写博客"></a>编写博客</h1><p>在source/_posts下，编写markdown作为博客源文件，也可以使用hexo n “NewBlog”指令为你新建一篇md。hexo在这里已经为我们创建了一个hello-world作为模板。</p>
+<p>博客的开头可以附加例如标题、时间等信息，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:     // 文章标题</span><br><span class="line">date:   // 创建日期</span><br><span class="line">updated:  // 更新日期</span><br><span class="line">tags:    </span><br><span class="line">   - a</span><br><span class="line">   - b   // 标签</span><br><span class="line">categories: </span><br><span class="line">   - a</span><br><span class="line">   - b  // 分类</span><br><span class="line">keywords:  // 关键字</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h1 id="测试并部署"><a href="#测试并部署" class="headerlink" title="测试并部署"></a>测试并部署</h1><h2 id="1-使用hexo进行生成"><a href="#1-使用hexo进行生成" class="headerlink" title="1. 使用hexo进行生成"></a>1. 使用hexo进行生成</h2><p>使用以下指令完成生成工作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-测试"><a href="#2-测试" class="headerlink" title="2. 测试"></a>2. 测试</h2><p>使用以下指令开启本地测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>此时在浏览器中输入localhost:4000可以预览博客页面效果。</p>
+<h2 id="3-部署"><a href="#3-部署" class="headerlink" title="3. 部署"></a>3. 部署</h2><p>使用以下指令将生成的博客部署至master分支：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<p>至此，刚刚创建的博客已经完成部署和发布工作，可以至 <a target="_blank" rel="noopener" href="https://username.github.io/">https://UserName.github.io</a> 页面浏览实际的博客页面，其中UserName为你的GitHub用户名。</p>
+<h1 id="TroubleShooting"><a href="#TroubleShooting" class="headerlink" title="TroubleShooting"></a>TroubleShooting</h1><h2 id="hexo-d部署授权失败"><a href="#hexo-d部署授权失败" class="headerlink" title="hexo d部署授权失败"></a>hexo d部署授权失败</h2><p>执行hexo d指令时，出现下述错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</span><br></pre></td></tr></table></figure>
+<p>需要改为使用Token的方式，具体参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41010198/article/details/119698015">这篇博客</a>即可，这里就不详述了。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">官方文档</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a></li>
@@ -201,10 +259,8 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyxhangiian123456789/article/details/101797464">使用github搭建Markdown博客系统</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4bcf2848b3fc">多台电脑使用Hexo</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MuYunyun/p/6082359.html">如何用Github的gh-pages分支展示自己的项目</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9a9b35c819c3">Hexo使用、Markdown语法笔记</a></li>
 </ul>
-<h1 id="TroubleShooting"><a href="#TroubleShooting" class="headerlink" title="TroubleShooting"></a>TroubleShooting</h1><h2 id="hexo-d部署授权失败"><a href="#hexo-d部署授权失败" class="headerlink" title="hexo d部署授权失败"></a>hexo d部署授权失败</h2><p>执行hexo d指令时，出现下述错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</span><br></pre></td></tr></table></figure>
-<p>需要改为使用Token的方式，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41010198/article/details/119698015">这篇博客</a>即可。</p>
 
       
     </div>
@@ -247,16 +303,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-09-27 13:52:19" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
+              <time title="创建时间：2021-09-27 13:52:19 / 修改时间：15:02:20" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-26 18:39:41" itemprop="dateModified" datetime="2021-09-26T18:39:41+08:00">2021-09-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -264,6 +314,10 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Unreal-Engine/" itemprop="url" rel="index"><span itemprop="name">Unreal Engine</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unreal-Engine/Program/" itemprop="url" rel="index"><span itemprop="name">Program</span></a>
                 </span>
             </span>
 
@@ -384,7 +438,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
