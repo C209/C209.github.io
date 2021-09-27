@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN,zh-TW,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"c209.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一. 创建基础文件1. 创建.Target.cs在项目的Source目录下直接创建Program的Target.cs文件，建议直接复制某个现成的Program。 注意，要么直接在Source里面这一级放所有的Target.cs，要么都放进目录层级里面去，不能有的在里面有的在外面。UBT的搜索逻辑是如果搜索到了其中一个，则不会再往下进行搜索了。所以有的项目的做法是把它们整理进不同的文件目录，如Run">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在工程目录下创建StandaloneProgram">
+<meta property="og:url" content="https://c209.github.io/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/index.html">
+<meta property="og:site_name" content="C209&#39;s Blog">
+<meta property="og:description" content="一. 创建基础文件1. 创建.Target.cs在项目的Source目录下直接创建Program的Target.cs文件，建议直接复制某个现成的Program。 注意，要么直接在Source里面这一级放所有的Target.cs，要么都放进目录层级里面去，不能有的在里面有的在外面。UBT的搜索逻辑是如果搜索到了其中一个，则不会再往下进行搜索了。所以有的项目的做法是把它们整理进不同的文件目录，如Run">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-27T05:52:19.428Z">
+<meta property="article:modified_time" content="2021-09-26T10:39:41.518Z">
+<meta property="article:author" content="C209">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://c209.github.io/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>在工程目录下创建StandaloneProgram | C209's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">C209's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="C209">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C209's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在工程目录下创建StandaloneProgram
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-27 13:52:19" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-26 18:39:41" itemprop="dateModified" datetime="2021-09-26T18:39:41+08:00">2021-09-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unreal-Engine/" itemprop="url" rel="index"><span itemprop="name">Unreal Engine</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一-创建基础文件"><a href="#一-创建基础文件" class="headerlink" title="一. 创建基础文件"></a>一. 创建基础文件</h1><h2 id="1-创建-Target-cs"><a href="#1-创建-Target-cs" class="headerlink" title="1. 创建.Target.cs"></a>1. 创建.Target.cs</h2><p>在项目的Source目录下直接创建Program的Target.cs文件，建议直接复制某个现成的Program。</p>
+<p>注意，要么直接在Source里面这一级放所有的Target.cs，要么都放进目录层级里面去，不能有的在里面有的在外面。UBT的搜索逻辑是如果搜索到了其中一个，则不会再往下进行搜索了。所以有的项目的做法是把它们整理进不同的文件目录，如Runtime和Program，这样也清晰一些。这里因为项目仅有这么一个特殊的Program，挪其他的代码位置的话，git提交记录会有一堆rename，不太方便，所以就和项目的Game.Target.cs这些直接放在一块了。</p>
+<h2 id="2-启动模块"><a href="#2-启动模块" class="headerlink" title="2. 启动模块"></a>2. 启动模块</h2><p>独立Program必然有至少一个模块，该模块提供启动的入口，负责各平台的main函数入口。建议是各平台的main函数调用自己实现的一个Main，真正的启动逻辑在这个里面，这样可以实现平台无关性。</p>
+<p>我们可以将我们所需的模块直接放进项目Source中的某一级目录，不必和Target.cs在一个层级下。它们可以多个模块在同一个目录下，无需彼此相互独立。</p>
+<h2 id="3-配置-Target-cs"><a href="#3-配置-Target-cs" class="headerlink" title="3. 配置.Target.cs"></a>3. 配置.Target.cs</h2><h3 id="指定生成的project的目录"><a href="#指定生成的project的目录" class="headerlink" title="指定生成的project的目录"></a>指定生成的project的目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SolutionDirectory = &quot;MyPrograms&quot;;</span><br></pre></td></tr></table></figure>
+<p>将一会生成的project在sln中显示在MyPrograms下，否则统一在Programs中很难找到。</p>
+<h1 id="二-对项目目录下的uproject执行generate-sln"><a href="#二-对项目目录下的uproject执行generate-sln" class="headerlink" title="二. 对项目目录下的uproject执行generate sln"></a>二. 对项目目录下的uproject执行generate sln</h1><p>这将在项目工程的sln里的MyPrograms中新增一个project，后续的改动就可以直接在sln中修改了。</p>
+<h1 id="三-修改编译相关属性"><a href="#三-修改编译相关属性" class="headerlink" title="三. 修改编译相关属性"></a>三. 修改编译相关属性</h1><p>建议将Target.cs中的LinkType这样修改：<code>LinkType = TargetLinkType.Monolithic;</code></p>
+<p>如果是Modular的话，就会将各个依赖的模块编译为独立的dll进来，然后在运行起来的时候链接起来。虽然这和Editor的启动方式一致，似乎也并不会出现编译问题，但是在项目目录的Binaries下出现一堆dll其实也挺麻烦的。下次想找项目build出来的exe和dll的时候也不太方便，干脆编进一个整体比较简单。</p>
+<h1 id="四-修改运行时的项目路径"><a href="#四-修改运行时的项目路径" class="headerlink" title="四. 修改运行时的项目路径"></a>四. 修改运行时的项目路径</h1><p>在你的Main函数入口处，覆盖ProjectDir:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FGenericPlatformMisc::SetOverrideProjectDir(FString::Printf(TEXT(&quot;../../Programs/%s/&quot;), FApp::GetProjectName()));</span><br></pre></td></tr></table></figure>
+<p>因为默认的路径是Engine/Programs/，这样找起来不太方便。调整之后就会出现在项目目录下的Programs目录里了。</p>
+<h1 id="五-配置模块"><a href="#五-配置模块" class="headerlink" title="五. 配置模块"></a>五. 配置模块</h1><h3 id="1-指定Program需要的模块"><a href="#1-指定Program需要的模块" class="headerlink" title="1. 指定Program需要的模块"></a>1. 指定Program需要的模块</h3><p>在刚刚创建的Target.cs中，配置LaunchModuleName为提供入口的那个模块，并将其他依赖的模块添加至ExtraModuleNames。这些额外依赖的模块后续仍然需要手动加载，暂时不表。</p>
+<h3 id="2-手动加载其他依赖的模块"><a href="#2-手动加载其他依赖的模块" class="headerlink" title="2. 手动加载其他依赖的模块"></a>2. 手动加载其他依赖的模块</h3><p>在启动的时候，适当的地方主动调用FModuleManager::Get().LoadModuleChecked()进行加载。</p>
+<h1 id="六-编译"><a href="#六-编译" class="headerlink" title="六. 编译"></a>六. 编译</h1><p>设置刚刚生成出来的project为start up project，编译并运行它即可。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147598518">Standalone Application</a></li>
+<li><a target="_blank" rel="noopener" href="https://imzlp.com/posts/31962/">Create A Standalone Application</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/145633340">Program 类型工程的限制和解决方法</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="next" title="博客搭建">
+      博客搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">一. 创建基础文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA-Target-cs"><span class="nav-number">1.1.</span> <span class="nav-text">1. 创建.Target.cs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%9D%97"><span class="nav-number">1.2.</span> <span class="nav-text">2. 启动模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE-Target-cs"><span class="nav-number">1.3.</span> <span class="nav-text">3. 配置.Target.cs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E7%94%9F%E6%88%90%E7%9A%84project%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.1.</span> <span class="nav-text">指定生成的project的目录</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E5%AF%B9%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84uproject%E6%89%A7%E8%A1%8Cgenerate-sln"><span class="nav-number">2.</span> <span class="nav-text">二. 对项目目录下的uproject执行generate sln</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89-%E4%BF%AE%E6%94%B9%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3%E5%B1%9E%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">三. 修改编译相关属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B-%E4%BF%AE%E6%94%B9%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%B7%AF%E5%BE%84"><span class="nav-number">4.</span> <span class="nav-text">四. 修改运行时的项目路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94-%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97"><span class="nav-number">5.</span> <span class="nav-text">五. 配置模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%8C%87%E5%AE%9AProgram%E9%9C%80%E8%A6%81%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-number">5.0.1.</span> <span class="nav-text">1. 指定Program需要的模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%89%8B%E5%8A%A8%E5%8A%A0%E8%BD%BD%E5%85%B6%E4%BB%96%E4%BE%9D%E8%B5%96%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="nav-number">5.0.2.</span> <span class="nav-text">2. 手动加载其他依赖的模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD-%E7%BC%96%E8%AF%91"><span class="nav-number">6.</span> <span class="nav-text">六. 编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">C209</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">C209</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
