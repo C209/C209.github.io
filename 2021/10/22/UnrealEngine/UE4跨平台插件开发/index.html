@@ -23,28 +23,32 @@
     var CONFIG = {"hostname":"c209.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="C209&#39;s Blog">
-<meta property="og:url" content="https://c209.github.io/index.html">
+  <meta name="description" content="前置基础学习这部分内容可以简单快速浏览一下。也可以先略过此部分内容，在之后的内容中涉及到相关的部分再回过来查看相关细节。 引擎工具 UE4模块详解,了解如何创建模块 第三方库官方文档 Linking_Dlls 安卓配置规则系统 UnrealPluginLanguage UPL源码:其中的注释即上面的文档，非常全面 虚幻插件语言参考  SDK接入相关 UE4中使用第三方库 腾讯GVoice接入文档:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE4跨平台插件开发">
+<meta property="og:url" content="https://c209.github.io/2021/10/22/UnrealEngine/UE4%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/index.html">
 <meta property="og:site_name" content="C209&#39;s Blog">
+<meta property="og:description" content="前置基础学习这部分内容可以简单快速浏览一下。也可以先略过此部分内容，在之后的内容中涉及到相关的部分再回过来查看相关细节。 引擎工具 UE4模块详解,了解如何创建模块 第三方库官方文档 Linking_Dlls 安卓配置规则系统 UnrealPluginLanguage UPL源码:其中的注释即上面的文档，非常全面 虚幻插件语言参考  SDK接入相关 UE4中使用第三方库 腾讯GVoice接入文档:">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-21T16:33:59.365Z">
+<meta property="article:modified_time" content="2021-10-21T16:49:15.666Z">
 <meta property="article:author" content="C209">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://c209.github.io/">
+<link rel="canonical" href="https://c209.github.io/2021/10/22/UnrealEngine/UE4%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>C209's Blog</title>
+  <title>UE4跨平台插件开发 | C209's Blog</title>
   
 
 
@@ -147,12 +151,13 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,zh-TW,en,default">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/10/22/UnrealEngine/UE4%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -165,10 +170,9 @@
       <meta itemprop="name" content="C209's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/22/UnrealEngine/UE4%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="post-title-link" itemprop="url">UE4跨平台插件开发</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          UE4跨平台插件开发
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -195,6 +199,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
   <span class="post-meta-item">
     
@@ -219,7 +230,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前置基础学习"><a href="#前置基础学习" class="headerlink" title="前置基础学习"></a>前置基础学习</h1><p>这部分内容可以简单快速浏览一下。也可以先略过此部分内容，在之后的内容中涉及到相关的部分再回过来查看相关细节。</p>
+        <h1 id="前置基础学习"><a href="#前置基础学习" class="headerlink" title="前置基础学习"></a>前置基础学习</h1><p>这部分内容可以简单快速浏览一下。也可以先略过此部分内容，在之后的内容中涉及到相关的部分再回过来查看相关细节。</p>
 <h3 id="引擎工具"><a href="#引擎工具" class="headerlink" title="引擎工具"></a>引擎工具</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/107270501">UE4模块详解,了解如何创建模块</a></li>
 <li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/zh-CN/Programming/BuildTools/UnrealBuildTool/ThirdPartyLibraries/index.html">第三方库官方文档</a></li>
@@ -338,7 +349,6 @@
 <li><a target="_blank" rel="noopener" href="https://forums.unrealengine.com/development-discussion/ios-development/5179-accessing-ios-sdk-possible">Accessing iOS SDK</a></li>
 </ul>
 
-      
     </div>
 
     
@@ -347,303 +357,39 @@
 
     <div>
       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:16px;">全文完，仅代表个人理解，若有不足之处请指正。</div>
+    
+</div>
+      
     </div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="prev" title="博客搭建">
+      <i class="fa fa-chevron-left"></i> 博客搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="C209">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C209's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">博客搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-27 13:52:19" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-28 21:33:09" itemprop="dateModified" datetime="2021-09-28T21:33:09+08:00">2021-09-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9D%82%E9%A1%B9/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本文讨论使用GitHub Pages作为博客页，使用markdown作为博客的记录形式，利用hexo来完成相应的生成工作。</p>
-<h2 id="GitHub-Pages的组织逻辑"><a href="#GitHub-Pages的组织逻辑" class="headerlink" title="GitHub Pages的组织逻辑"></a>GitHub Pages的组织逻辑</h2><p>GitHub Pages有两种组织形式：  </p>
-<ul>
-<li>个人主页: 对应repo为{UserName}.github.io的master分支</li>
-<li>项目主页: 对应各个repo下的gh-pages分支。</li>
-</ul>
-<p>本文暂且只讨论个人主页的搭建。</p>
-<h1 id="创建git-repo"><a href="#创建git-repo" class="headerlink" title="创建git repo"></a>创建git repo</h1><p>在GitHub上新建一个repo，名称为UserName.github.io，其中UserName为你的GitHub用户名。<br>这个repo的master分支就用来作为博客的页面存储了。</p>
-<h1 id="hexo相关的环境准备"><a href="#hexo相关的环境准备" class="headerlink" title="hexo相关的环境准备"></a>hexo相关的环境准备</h1><h2 id="1-安装Node-js"><a href="#1-安装Node-js" class="headerlink" title="1. 安装Node.js"></a>1. 安装Node.js</h2><p><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">下载地址在这里</a>，安装完成后在控制台中输入以下命令来检查是否成功：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-安装hexo"><a href="#2-安装hexo" class="headerlink" title="2. 安装hexo"></a>2. 安装hexo</h2><p>使用npm进行安装:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-
-<h1 id="创建本地博客项目"><a href="#创建本地博客项目" class="headerlink" title="创建本地博客项目"></a>创建本地博客项目</h1><h2 id="1-初始化博客目录"><a href="#1-初始化博客目录" class="headerlink" title="1. 初始化博客目录"></a>1. 初始化博客目录</h2><p>在你想要创建项目的地方，使用以下指令初始化一个指定名称的博客目录：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init MyBlog</span><br></pre></td></tr></table></figure>
-<p>其中MyBlog为创建的博客目录名，可以任意指定。</p>
-<h2 id="2-安装Git部署插件"><a href="#2-安装Git部署插件" class="headerlink" title="2. 安装Git部署插件"></a>2. 安装Git部署插件</h2><p>稍后执行部署的时候，需要告诉hexo将博客部署到哪里，这里我们希望将其部署至GitHub仓库。所以使用以下指令进行安装:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-修改一些配置"><a href="#3-修改一些配置" class="headerlink" title="3. 修改一些配置"></a>3. 修改一些配置</h2><p>我们需要对配置文件(MyBlog/_config.yml)进行一些修改。</p>
-<p>首先配置一下博客页的标题、作者、语言、时区等信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: C209&#x27;s Blog</span><br><span class="line">subtitle: &#x27;&#x27;</span><br><span class="line">description: &#x27;&#x27;</span><br><span class="line">keywords:</span><br><span class="line">author: C209</span><br><span class="line">language: </span><br><span class="line">- zh-CN</span><br><span class="line">- zh-TW</span><br><span class="line">- en</span><br><span class="line">timezone: Asia/Shanghai</span><br></pre></td></tr></table></figure>
-
-<p>接着是最底下的deploy信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/UserName/UserName.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<p>其中UserName为你的GitHub用户名。</p>
-<h1 id="将博客项目存储至repo"><a href="#将博客项目存储至repo" class="headerlink" title="将博客项目存储至repo"></a>将博客项目存储至repo</h1><p>至此为止，MyBlog目录下的文件其实都是只在本地的，之后hexo执行部署时并不会将它们也推送上去（这其中也包括source/_posts下的md源文件）。假如以后想要换个机器接着写博客的话，这些东西丢了还是很麻烦的。所以希望利用这个repo也将这些内容一并存储起来，之后只需要在别处把项目clone下来，就可以继续写博客了。对这个不感兴趣的话，本步骤可以跳过。</p>
-<h2 id="1-将博客项目关联至repo"><a href="#1-将博客项目关联至repo" class="headerlink" title="1. 将博客项目关联至repo"></a>1. 将博客项目关联至repo</h2><p>在MyBlog目录下，执行以下命令:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin https://github.com/UserName/UserName.github.io</span><br></pre></td></tr></table></figure>
-<p>其中UserName为你的GitHub用户名。</p>
-<h2 id="2-创建并推送至新的分支"><a href="#2-创建并推送至新的分支" class="headerlink" title="2. 创建并推送至新的分支"></a>2. 创建并推送至新的分支</h2><p>使用以下命令将当前博客项目中的文件推送至新建的source分支:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b source</span><br><span class="line">git add .</span><br><span class="line">git commit -m &#x27;add source&#x27;</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
-
-<p>之后在其他机器上，只需要clone这个repo并切换至source分支，并利用之前步骤的指令完成hexo相关的环境准备即可。md的编写和提交也直接在source分支上进行。</p>
-<h1 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h1><p>可以找一个自己喜欢的主题，这里以<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">next</a>为例。</p>
-<h2 id="1-下载主题"><a href="#1-下载主题" class="headerlink" title="1. 下载主题"></a>1. 下载主题</h2><p>在MyBlog下执行以下指令即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-<p>如果有参考之前的步骤，将博客项目提交至source分支的话，这里也可以将该主题直接作为我们自己repo的一个submodule，这样比较简洁清晰。这一步纯粹看个人喜好。如果有需要针对主题进行的个人改动，建议以自己的fork作为submodule。</p>
-<h2 id="2-在配置中启用主题"><a href="#2-在配置中启用主题" class="headerlink" title="2. 在配置中启用主题"></a>2. 在配置中启用主题</h2><p>依旧修改配置文件(MyBlog/_config.yml):</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-美化主题"><a href="#3-美化主题" class="headerlink" title="3. 美化主题"></a>3. 美化主题</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2">创建分类页面</a>。</li>
-<li><a target="_blank" rel="noopener" href="http://www.360doc.com/content/19/0420/09/22888630_830052585.shtml">其他美化效果</a></li>
-</ul>
-<h1 id="编写博客"><a href="#编写博客" class="headerlink" title="编写博客"></a>编写博客</h1><p>在source/_posts下，编写markdown作为博客源文件，也可以使用hexo n “NewBlog”指令为你新建一篇md。hexo在这里已经为我们创建了一个hello-world作为模板。</p>
-<p>博客的开头可以附加例如标题、时间等信息，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:     // 文章标题</span><br><span class="line">date:   // 创建日期</span><br><span class="line">updated:  // 更新日期</span><br><span class="line">tags:    </span><br><span class="line">   - a</span><br><span class="line">   - b   // 标签</span><br><span class="line">categories: </span><br><span class="line">   - a</span><br><span class="line">   - b  // 分类</span><br><span class="line">keywords:  // 关键字</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<h1 id="测试并部署"><a href="#测试并部署" class="headerlink" title="测试并部署"></a>测试并部署</h1><h2 id="1-使用hexo进行生成"><a href="#1-使用hexo进行生成" class="headerlink" title="1. 使用hexo进行生成"></a>1. 使用hexo进行生成</h2><p>使用以下指令完成生成工作：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-测试"><a href="#2-测试" class="headerlink" title="2. 测试"></a>2. 测试</h2><p>使用以下指令开启本地测试：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>此时在浏览器中输入localhost:4000可以预览博客页面效果。</p>
-<h2 id="3-部署"><a href="#3-部署" class="headerlink" title="3. 部署"></a>3. 部署</h2><p>使用以下指令将生成的博客部署至master分支：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-<p>至此，刚刚创建的博客已经完成部署和发布工作，可以至 <a target="_blank" rel="noopener" href="https://username.github.io/">https://UserName.github.io</a> 页面浏览实际的博客页面，其中UserName为你的GitHub用户名。</p>
-<h3 id="部署至多个平台"><a href="#部署至多个平台" class="headerlink" title="部署至多个平台"></a>部署至多个平台</h3><p>如果想要同时部署至多个平台，可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45254208/article/details/109186355">这篇博客</a>。</p>
-<h1 id="TroubleShooting"><a href="#TroubleShooting" class="headerlink" title="TroubleShooting"></a>TroubleShooting</h1><h2 id="hexo-d部署授权失败"><a href="#hexo-d部署授权失败" class="headerlink" title="hexo d部署授权失败"></a>hexo d部署授权失败</h2><p>执行hexo d指令时，出现下述错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.</span><br></pre></td></tr></table></figure>
-<p>需要改为使用Token的方式，具体参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41010198/article/details/119698015">这篇博客</a>即可，这里就不详述了。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">官方文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a></li>
-<li><a target="_blank" rel="noopener" href="https://imzlp.com/posts/58952/">Github Pages+Hexo 博客搭建</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyxhangiian123456789/article/details/101797464">使用github搭建Markdown博客系统</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4bcf2848b3fc">多台电脑使用Hexo</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MuYunyun/p/6082359.html">如何用Github的gh-pages分支展示自己的项目</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9a9b35c819c3">Hexo使用、Markdown语法笔记</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fe88ef479dd">Hexo+Next 添加菜单分类页面</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next/wiki/%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2">创建分类页面</a></li>
-<li><a target="_blank" rel="noopener" href="http://yuchen-lea.github.io/2016-01-23-display-hexo-category-in-hierarchy/">Hexo多级类别的层级显示</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cscshi/p/15196122.html">Hexo-NexT 分类多层级描述</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.360doc.com/content/19/0420/09/22888630_830052585.shtml">Hexo框架下用NexT(v7.0+)主题美化博客</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Awt_FuDongLai/article/details/107430942">next主题添加版权声明</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45254208/article/details/109186355">Hexo博客镜像(github和gitee双部署)</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/blue_zy/article/details/79071414">为你的Hexo加上评论系统-Valine</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="C209">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C209's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/" class="post-title-link" itemprop="url">在工程目录下创建StandaloneProgram</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-27 13:52:19 / 修改时间：17:33:50" itemprop="dateCreated datePublished" datetime="2021-09-27T13:52:19+08:00">2021-09-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unreal-Engine/" itemprop="url" rel="index"><span itemprop="name">Unreal Engine</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unreal-Engine/Program/" itemprop="url" rel="index"><span itemprop="name">Program</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/27/UnrealEngine/%E5%9C%A8%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAStandaloneProgram/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一-创建基础文件"><a href="#一-创建基础文件" class="headerlink" title="一. 创建基础文件"></a>一. 创建基础文件</h1><h2 id="1-创建-Target-cs"><a href="#1-创建-Target-cs" class="headerlink" title="1. 创建.Target.cs"></a>1. 创建.Target.cs</h2><p>在项目的Source目录下直接创建Program的Target.cs文件，建议直接复制某个现成的Program。</p>
-<p>注意，要么直接在Source里面这一级放所有的Target.cs，要么都放进目录层级里面去，不能有的在里面有的在外面。UBT的搜索逻辑是如果搜索到了其中一个，则不会再往下进行搜索了。所以有的项目的做法是把它们整理进不同的文件目录，如Runtime和Program，这样也清晰一些。这里因为项目仅有这么一个特殊的Program，挪其他的代码位置的话，git提交记录会有一堆rename，不太方便，所以就和项目的Game.Target.cs这些直接放在一块了。</p>
-<h2 id="2-启动模块"><a href="#2-启动模块" class="headerlink" title="2. 启动模块"></a>2. 启动模块</h2><p>独立Program必然有至少一个模块，该模块提供启动的入口，负责各平台的main函数入口。建议是各平台的main函数调用自己实现的一个Main，真正的启动逻辑在这个里面，这样可以实现平台无关性。</p>
-<p>我们可以将我们所需的模块直接放进项目Source中的某一级目录，不必和Target.cs在一个层级下。它们可以多个模块在同一个目录下，无需彼此相互独立。</p>
-<h2 id="3-配置-Target-cs"><a href="#3-配置-Target-cs" class="headerlink" title="3. 配置.Target.cs"></a>3. 配置.Target.cs</h2><h3 id="指定生成的project的目录"><a href="#指定生成的project的目录" class="headerlink" title="指定生成的project的目录"></a>指定生成的project的目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SolutionDirectory = &quot;MyPrograms&quot;;</span><br></pre></td></tr></table></figure>
-<p>将一会生成的project在sln中显示在MyPrograms下，否则统一在Programs中很难找到。</p>
-<h1 id="二-对项目目录下的uproject执行generate-sln"><a href="#二-对项目目录下的uproject执行generate-sln" class="headerlink" title="二. 对项目目录下的uproject执行generate sln"></a>二. 对项目目录下的uproject执行generate sln</h1><p>这将在项目工程的sln里的MyPrograms中新增一个project，后续的改动就可以直接在sln中修改了。</p>
-<h1 id="三-修改编译相关属性"><a href="#三-修改编译相关属性" class="headerlink" title="三. 修改编译相关属性"></a>三. 修改编译相关属性</h1><p>建议将Target.cs中的LinkType这样修改：<code>LinkType = TargetLinkType.Monolithic;</code></p>
-<p>如果是Modular的话，就会将各个依赖的模块编译为独立的dll进来，然后在运行起来的时候链接起来。虽然这和Editor的启动方式一致，似乎也并不会出现编译问题，但是在项目目录的Binaries下出现一堆dll其实也挺麻烦的。下次想找项目build出来的exe和dll的时候也不太方便，干脆编进一个整体比较简单。</p>
-<h1 id="四-修改运行时的项目路径"><a href="#四-修改运行时的项目路径" class="headerlink" title="四. 修改运行时的项目路径"></a>四. 修改运行时的项目路径</h1><p>在你的Main函数入口处，覆盖ProjectDir:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FGenericPlatformMisc::SetOverrideProjectDir(FString::Printf(TEXT(&quot;../../Programs/%s/&quot;), FApp::GetProjectName()));</span><br></pre></td></tr></table></figure>
-<p>因为默认的路径是Engine/Programs/，这样找起来不太方便。调整之后就会出现在项目目录下的Programs目录里了。</p>
-<h1 id="五-配置模块"><a href="#五-配置模块" class="headerlink" title="五. 配置模块"></a>五. 配置模块</h1><h3 id="1-指定Program需要的模块"><a href="#1-指定Program需要的模块" class="headerlink" title="1. 指定Program需要的模块"></a>1. 指定Program需要的模块</h3><p>在刚刚创建的Target.cs中，配置LaunchModuleName为提供入口的那个模块，并将其他依赖的模块添加至ExtraModuleNames。这些额外依赖的模块后续仍然需要手动加载，暂时不表。</p>
-<h3 id="2-手动加载其他依赖的模块"><a href="#2-手动加载其他依赖的模块" class="headerlink" title="2. 手动加载其他依赖的模块"></a>2. 手动加载其他依赖的模块</h3><p>在启动的时候，适当的地方主动调用FModuleManager::Get().LoadModuleChecked()进行加载。</p>
-<h1 id="六-编译"><a href="#六-编译" class="headerlink" title="六. 编译"></a>六. 编译</h1><p>设置刚刚生成出来的project为start up project，编译并运行它即可。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147598518">Standalone Application</a></li>
-<li><a target="_blank" rel="noopener" href="https://imzlp.com/posts/31962/">Create A Standalone Application</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/145633340">Program 类型工程的限制和解决方法</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -690,6 +436,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">前置基础学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E6%93%8E%E5%B7%A5%E5%85%B7"><span class="nav-number">1.0.1.</span> <span class="nav-text">引擎工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDK%E6%8E%A5%E5%85%A5%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.2.</span> <span class="nav-text">SDK接入相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.3.</span> <span class="nav-text">基础相关</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">实现流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.1.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E6%8F%92%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">一. 创建项目插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 配置插件类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6%E7%9A%84build-cs"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 配置插件的build.cs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E6%8E%A5%E5%85%A5Win64%E5%B9%B3%E5%8F%B0%E5%BA%93"><span class="nav-number">2.3.</span> <span class="nav-text">二. 接入Win64平台库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">2.3.1.</span> <span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%BC%E5%85%A5dll%E5%92%8Cexe%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.2.</span> <span class="nav-text">1. 导入dll和exe文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEThirdParty%E7%9A%84build-cs"><span class="nav-number">2.3.3.</span> <span class="nav-text">2. 配置ThirdParty的build.cs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BC%95%E5%85%A5%E5%BA%93%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">2.3.4.</span> <span class="nav-text">3. 引入库中的内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E6%8E%A5%E5%85%A5Android%E5%B9%B3%E5%8F%B0%E5%BA%93"><span class="nav-number">2.4.</span> <span class="nav-text">三. 接入Android平台库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%BC%E5%85%A5-jar%E5%92%8C-so%E6%96%87%E4%BB%B6"><span class="nav-number">2.4.1.</span> <span class="nav-text">1. 导入.jar和.so文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEThirdParty%E7%9A%84build-cs-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">2. 配置ThirdParty的build.cs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99UPL%E8%84%9A%E6%9C%AC"><span class="nav-number">2.4.3.</span> <span class="nav-text">3. 编写UPL脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jar%E7%9A%84%E5%BC%95%E5%85%A5"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">jar的引入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%B0%83%E7%94%A8JNI%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.4.4.</span> <span class="nav-text">4. 调用JNI接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BC%95%E7%94%A8java%E4%B8%AD%E7%9A%84object%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">如何引用java中的object类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AEobject%E7%B1%BB%E5%9E%8B%E4%B8%AD%E7%9A%84%E5%9F%9F"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">如何访问object类型中的域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8A%A8%E6%80%81%E8%8E%B7%E5%8F%96%E7%9B%B8%E5%85%B3%E6%9D%83%E9%99%90"><span class="nav-number">2.4.5.</span> <span class="nav-text">5. 动态获取相关权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.4.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B-%E6%8E%A5%E5%85%A5iOS%E5%B9%B3%E5%8F%B0%E5%BA%93"><span class="nav-number">2.5.</span> <span class="nav-text">四. 接入iOS平台库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87%E5%BA%93%E6%96%87%E4%BB%B6"><span class="nav-number">2.5.1.</span> <span class="nav-text">1. 准备库文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8build-cs%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%BA%93%E4%BE%9D%E8%B5%96"><span class="nav-number">2.5.2.</span> <span class="nav-text">2. 在build.cs中添加库依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-C-%E8%B0%83%E7%94%A8%E5%BA%93%E4%B8%AD%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.5.3.</span> <span class="nav-text">3. C++调用库中接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">2.5.4.</span> <span class="nav-text">4. 权限管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="nav-number">2.5.5.</span> <span class="nav-text">5. 踩坑记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99-1"><span class="nav-number">2.5.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
