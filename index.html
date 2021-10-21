@@ -153,6 +153,133 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,zh-TW,en,default">
+    <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/10/22/UnrealEngine/UE4%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%85%A8%E9%9D%A2%E5%B1%8F%E9%80%82%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="C209">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C209's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/22/UnrealEngine/UE4%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%85%A8%E9%9D%A2%E5%B1%8F%E9%80%82%E9%85%8D/" class="post-title-link" itemprop="url">UE4移动端全面屏适配</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-22 01:02:01 / 修改时间：01:02:51" itemprop="dateCreated datePublished" datetime="2021-10-22T01:02:01+08:00">2021-10-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unreal-Engine/" itemprop="url" rel="index"><span itemprop="name">Unreal Engine</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unreal-Engine/Platform/" itemprop="url" rel="index"><span itemprop="name">Platform</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/22/UnrealEngine/UE4%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%85%A8%E9%9D%A2%E5%B1%8F%E9%80%82%E9%85%8D/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/22/UnrealEngine/UE4%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%85%A8%E9%9D%A2%E5%B1%8F%E9%80%82%E9%85%8D/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>[本文档编写时使用UE4.21.0引擎]</p>
+<p>可以在Config/DefaultDeviceProfiles.ini中，按照机型名对r.CustomUnsafeZones进行配置；经实际调试与测试，该参数仅用于编辑器中的显示与临时表现。可以根据平台，从配置中获得SafeZone.Landscape值，运行时引擎底层FDisplayMetrics::RebuildDisplayMetrics的Platform实现中查找配置计算SafeZone进行显示。  </p>
+<p>适配工作中，美术的工作是在UMG中使用SafeZone控件进行边界偏移设置。SafeZone控件的本质是利用从平台相关的配置中读取四个边界的偏移数，对其子控件的边界进行Padding操作；它是严格按照偏移数据，强制进行像素偏移的Padding，而不管其中的子控件是否真的属于全屏贴边类型。（所以如果SafeZone下一层再嵌套一个SafeZone，你会发现偏移了两倍的距离。）一般SafeZone只加在全屏界面的最上层。</p>
+<h1 id="iOS配置SafeZone"><a href="#iOS配置SafeZone" class="headerlink" title="iOS配置SafeZone"></a>iOS配置SafeZone</h1><p>对于iPhone X等机型，只需要在UserWidget中使用SafeZone控件，即可实现自适应。而SafeZone的各个方向是否使用可以在控件属性中进行设置。这里的SafeZone属性默认是从系统查询得到的安全区信息，如果需要配置，则可以在对应机型的DeviceProfile配置中，设置SafeZone.Landscape.Left/Top/Right/Bottom值。</p>
+<p>iOS机型的DeviceProfile可以在{EngineDirection}/Config/BaseDeviceProfiles.ini中找到，可以使用{EngineDirection}/DefaultDeviceProfiles.ini中的值覆盖它：在编辑器中，Window-DeveloperTools-DeviceProfiles，点击SaveAsDefault即可将信息导出。然后在其中找到对应机型的DeviceProfile，添加形如如下字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+CVars=SafeZone.Landscape.Left=30</span><br></pre></td></tr></table></figure>
+<p>可以将其中的”left”替换为Top/Right/Bottom，它表示Landscape模式下到各方向的Padding。</p>
+<h1 id="Android配置SafeZone"><a href="#Android配置SafeZone" class="headerlink" title="Android配置SafeZone"></a>Android配置SafeZone</h1><p>安卓要使用SafeZone读取的是UE4.20新增的安卓配置规则系统(AndroidConfigRulesSystem)中的配置值：</p>
+<ul>
+<li>首先，在{ProjectDirection，即项目目录}/Build/Android/目录下，创建configrules.txt文件。</li>
+<li>在configrules.txt文件中，增加如下字段：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// version:1</span><br><span class="line">condition:((SourceType=SRC_DeviceModel,CompareType=CMP_Equal,MatchString=&quot;LYA-AL00&quot;)),(SafeZone_Landscape=&quot;50,0,0,0&quot;)</span><br></pre></td></tr></table></figure>
+其中，第一行的version是必需的，它用于进行配置的版本比较，会使用版本号更新的版本。而第二行为适配示例，它表示当机型为”LYA-AL00”时，使用该SafeZone配置。配置中的各个值表示Landscape（横屏模式，竖屏为Portrait）下，到左/上/右/下的padding值。</li>
+<li>创建xml文件：在{ProjectDirection}/Source/{ProjectName}/目录下，新建”MyGame_UPL.xml”文件。</li>
+<li>在MyGame_UPL.xml文件中，添加如下代码：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;root xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;init&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;setString result=&quot;ConfigRulesKey&quot; value=&quot;This is my encryption key&quot;/&gt;</span><br><span class="line">    &lt;/init&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;gradleCopies&gt;</span><br><span class="line">        &lt;copyFile src=&quot;$S(BuildDir)/configrules.txt&quot;</span><br><span class="line">                    dst=&quot;$S(BuildDir)/gradle/app/configrules.txt&quot;/&gt;</span><br><span class="line">    &lt;/gradleCopies&gt;</span><br><span class="line">    &lt;gradleProperties&gt;</span><br><span class="line">        &lt;insertValue value=&quot;CONFIGRULESTOOL_KEY=$S(ConfigRulesKey)&quot;/&gt;</span><br><span class="line">        &lt;insertNewline/&gt;</span><br><span class="line">        &lt;insertValue value=&quot;CONFIGRULESTOOL_JAR=$S(AbsEngineDir)/Build/Android/Prebuilt/ConfigRulesTool/bin/ConfigRulesTool.jar&quot;/&gt;</span><br><span class="line">        &lt;insertNewline/&gt;</span><br><span class="line">    &lt;/gradleProperties&gt;</span><br><span class="line">    &lt;gameActivityClassAdditions&gt;</span><br><span class="line">        &lt;insertValue value=&quot;public String CONFIGRULES_KEY = &amp;quot;$S(ConfigRulesKey)&amp;quot;;&quot;/&gt;</span><br><span class="line">        &lt;insertNewline/&gt;</span><br><span class="line">    &lt;/gameActivityClassAdditions&gt;</span><br><span class="line">    &lt;buildGradleAdditions&gt;</span><br><span class="line">        &lt;insert&gt;</span><br><span class="line">        &lt;![CDATA[</span><br><span class="line">task ProcessConfigRules(type: JavaExec) &#123;</span><br><span class="line">    description &#x27;Produces compressed and encrypted configules.bin.png in assets&#x27;</span><br><span class="line">    inputs.file file(&#x27;configrules.txt&#x27;)</span><br><span class="line">    outputs.file file(&#x27;src/main/assets/configrules.bin.png&#x27;)</span><br><span class="line">    main = &quot;-jar&quot;</span><br><span class="line">    args = [</span><br><span class="line">        &quot;$&#123;CONFIGRULESTOOL_JAR&#125;&quot;,</span><br><span class="line">        &#x27;c&#x27;,</span><br><span class="line">        &#x27;configrules.txt&#x27;,</span><br><span class="line">        &#x27;src/main/assets/configrules.bin.png&#x27;,</span><br><span class="line">        &quot;$&#123;CONFIGRULESTOOL_KEY&#125;&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">tasks.whenTaskAdded &#123; task -&gt;</span><br><span class="line">    if (CONFIGRULESTOOL_JAR != null) &#123;</span><br><span class="line">        if (task.name == &#x27;assembleRelease&#x27;) &#123;</span><br><span class="line">            task.dependsOn &#x27;ProcessConfigRules&#x27;</span><br><span class="line">           &#125;</span><br><span class="line">        if (task.name == &#x27;assembleDebug&#x27;) &#123;</span><br><span class="line">            task.dependsOn &#x27;ProcessConfigRules&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">        ]]&gt;</span><br><span class="line">        &lt;/insert&gt;</span><br><span class="line">    &lt;/buildGradleAdditions&gt;</span><br><span class="line">&lt;/root&gt;</span><br></pre></td></tr></table></figure>
+其中，ConfigRulesKey为加密秘钥。</li>
+<li>修改项目中的{ProjectName}.Build.cs文件，位于{ProjectDirection}/Source/{ProjectName}/中，在其中的添加如下代码：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (Target.Platform == UnrealTargetPlatform.Android)</span><br><span class="line">&#123;</span><br><span class="line">    // Add UPL to add configrules.txt to our APK</span><br><span class="line">    string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);</span><br><span class="line">    AdditionalPropertiesForReceipt.Add(&quot;AndroidPlugin&quot;, System.IO.Path.Combine(PluginPath, &quot;MyGame_UPL.xml&quot;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="安卓Manifest配置启用全屏设置"><a href="#安卓Manifest配置启用全屏设置" class="headerlink" title="安卓Manifest配置启用全屏设置"></a>安卓Manifest配置启用全屏设置</h2><p>AndroidManifest.xml是引擎根据ProjectSettings中的设置生成的，它位于于{ProjectDirection}/Intermediate/Android/APK/中。</p>
+<p>对于安卓机型，需要在ProjectSettings-Platforms-Android中进行配置：</p>
+<p>首先勾选Enable FullScreen Immersive。<br>之后，配置Extra Settings for &lt;application&gt; section，添加对应机型需要的meta-data。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta-data android:name=&quot;notch.config&quot; android:value=&quot;portrait|landscape&quot; /&gt;</span><br><span class="line">&lt;meta-data android:name=&quot;android.notch_support&quot; android:value=&quot;true&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>然后，在Extra Tags for GameActivity node中添加以下结点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//如果该值为true，则下面的ratio没有必要配置</span><br><span class="line">android:resizeableActivity=&quot;false&quot; </span><br><span class="line"></span><br><span class="line">android:maxAspectRatio=&quot;2.5&quot;</span><br></pre></td></tr></table></figure>
+<p>事实上还需要设置一个mata-data，引擎已经帮我们在Manifest中添加了。它是实现安卓全屏的关键，在此特意强调一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta-data android:name=&quot;android.max_aspect&quot; android:value=&quot;2.50&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="AndroidManifest-xml配置中的坑"><a href="#AndroidManifest-xml配置中的坑" class="headerlink" title="AndroidManifest.xml配置中的坑"></a>AndroidManifest.xml配置中的坑</h2><p>当targetSdkVersion&lt;=23时，会无法适配全面屏，而targetSdkVersion&gt;23时候不会出现这种情况。而targetSdkVersion是在ProjectSettings-Platform-Android中可以进行配置。</p>
+<p>要为 Android 8.0（API 级别 26）和更高版本设置最大长宽比，需要在 <activity> 标记中使用 android:MaxAspectRatio 声明最大比例。 以下示例演示了如何声明 2.4 的最大长宽比：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Render on full screen up to screen aspect ratio of 2.4 --&gt;</span><br><span class="line">&lt;!-- Use a letterbox on screens larger than 2.4 --&gt;</span><br><span class="line">&lt;activity android:maxAspectRatio=&quot;2.4&quot;&gt;</span><br><span class="line"> ...</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+
+<p>对于 Android 7.1 及更低版本，则是要在 <application> 元素中添加一个 名为 android.max_aspect 的 <meta-data> 元素， 如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Render on full screen up to screen aspect ratio of 2.4 --&gt;</span><br><span class="line">&lt;!-- Use a letterbox on screens larger than 2.4 --&gt;</span><br><span class="line">&lt;meta-data android:name=&quot;android.max_aspect&quot; android:value=&quot;2.4&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：如果设置了最大长宽比，请勿忘记同时设置 android:resizeableActivity false。 否则，最大长宽比没有任何作用。</strong></p>
+<h3 id="额外的坑"><a href="#额外的坑" class="headerlink" title="额外的坑"></a>额外的坑</h3><p>由于此次适配使用的引擎版本是4.21.0，当targetSDKVersion版本号为28（即对应Android9）时，会出现四指召唤出的引擎自带控制台无法执行输入操作。需要降低targetSDKVersion版本。</p>
+<h1 id="完成上述工作之后的维护工作"><a href="#完成上述工作之后的维护工作" class="headerlink" title="完成上述工作之后的维护工作"></a>完成上述工作之后的维护工作</h1><h3 id="获取设备型号名称"><a href="#获取设备型号名称" class="headerlink" title="获取设备型号名称"></a>获取设备型号名称</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    FString GetDeviceInfo()</span><br><span class="line">    &#123;</span><br><span class="line">#if PLATFORM_IOS</span><br><span class="line">        FString ret = FIOSPlatformMisc::GetDefaultDeviceProfileName();</span><br><span class="line">#elif PLATFORM_ANDROID</span><br><span class="line">        FString ret = FAndroidMisc::GetDeviceModel();</span><br><span class="line">#else</span><br><span class="line">        FString ret = FPlatformMisc::GetDeviceMakeAndModel();</span><br><span class="line">#endif</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="iOS机型扩展"><a href="#iOS机型扩展" class="headerlink" title="iOS机型扩展"></a>iOS机型扩展</h2><p>按理说引擎升级的时候也会将最新的iOS设备的相关配置信息更新进去，但考虑到实际项目中很难频繁更新引擎，所以针对机型的更新还是需要自己来完成。iOS设备的SafeZone信息是配置在DeviceProfiles.ini中的，参照IOSDeviceProfileSelectorModule中有关选择使用Profile信息的源码，使用的是iOS设备的设备名作为索引进行查询的。如需扩展，则需要修改其中调用的GetDefaultDeviceProfileName以获取合适的设备名，因为其中目前是使用硬编码实现的；之后在DeviceProfile.ini中按照对应的设备名进行添加即可。<br>按照BaseDeviceProfiles.ini中的格式，在DefaultDeviceProfiles.ini中添加新设备的DeviceProfile，并在其中添加SafeZone.Landscape.XXX值即可。注意，可以添加r.CustomUnsafeZones来提供编辑器中的显示需求。</p>
+<h2 id="Android机型扩展"><a href="#Android机型扩展" class="headerlink" title="Android机型扩展"></a>Android机型扩展</h2><p>如果需要在编辑器中显示出UnsafeZones，也可以像上述iOS设备那样，在DefaultDeviceProfiles.ini中添加该机型的DeviceProfile，并添加r.CUstomUnsafeZones。注意，建议使用编辑器中DeveloperTools中的DeviceProfile工具来添加和编辑新机型。<br>在Build/Android/configrules.txt中，添加新机型的SafeZone信息。具体配置格式见官方文档关于AndroidConfigRulesSystem中的相关内容。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN,zh-TW,en,default">
     <link itemprop="mainEntityOfPage" href="https://c209.github.io/2021/10/22/UnrealEngine/UE4%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +305,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-10-22 00:33:59 / 修改时间：00:49:15" itemprop="dateCreated datePublished" datetime="2021-10-22T00:33:59+08:00">2021-10-22</time>
+              <time title="创建时间：2021-10-22 00:33:59 / 修改时间：01:02:44" itemprop="dateCreated datePublished" datetime="2021-10-22T00:33:59+08:00">2021-10-22</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -190,7 +317,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unreal-Engine/Plugin/" itemprop="url" rel="index"><span itemprop="name">Plugin</span></a>
+                  <a href="/categories/Unreal-Engine/Platform/" itemprop="url" rel="index"><span itemprop="name">Platform</span></a>
                 </span>
             </span>
 
@@ -703,7 +830,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
